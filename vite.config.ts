@@ -6,19 +6,14 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 export default defineConfig({
 	build: {
 		lib: {
-			entry: path.resolve("src", "App.tsx"),
+			entry: path.resolve("src", "main.tsx"),
 			name: "squash-search",
 			fileName: (format) => `squash-search.${format}.js`,
 		},
 		cssCodeSplit: false,
-		rollupOptions: {
-			external: ["react", "react-dom"],
-			output: {
-				globals: {
-					react: "React",
-				},
-			},
-		},
 	},
 	plugins: [cssInjectedByJsPlugin(), react()],
+	define: {
+		"process.env": {},
+	},
 });

@@ -33,7 +33,7 @@ const HeaderContainerStyled = styled(Box, { name: "HeaderContainer" })(
 		[theme.breakpoints.up("md")]: {
 			padding: "0 12em",
 		},
-		"@container (max-width: 500px)": {
+		"@container (max-width: 750px)": {
 			padding: "0 1em",
 		},
 	})

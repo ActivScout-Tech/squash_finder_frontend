@@ -9,7 +9,7 @@ const ListContainer = styled(Box, { name: "ListContainer" })(({ theme }) => ({
 	[theme.breakpoints.up("md")]: {
 		padding: "1em 12em",
 	},
-	"@container (max-width: 500px)": {
+	"@container (max-width: 750px)": {
 		padding: "1em",
 	},
 }));
