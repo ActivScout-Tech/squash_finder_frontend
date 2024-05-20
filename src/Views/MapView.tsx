@@ -45,8 +45,12 @@ export default function MapView(props: MapViewProps) {
 			<MapContainer
 				center={
 					[
-						MainStore.selectedVenue?.latitude || MainStore.venues[0].latitude,
-						MainStore.selectedVenue?.longitude || MainStore.venues[0].longitude,
+						MainStore.selectedVenue?.latitude ||
+							MainStore.venues[0]?.latitude ||
+							0,
+						MainStore.selectedVenue?.longitude ||
+							MainStore.venues[0]?.longitude ||
+							0,
 					] as any
 				}
 				zoom={11}
@@ -88,10 +92,14 @@ export default function MapView(props: MapViewProps) {
 					borderRadius: "10px 0 0 10px",
 					borderTop: "2px solid #efeeec",
 				}}>
-				<ListCard
-					compact
-					venue={MainStore.selectedVenue || MainStore.venues[0]}
-				/>
+				{MainStore.selectedVenue || MainStore.venues[0] ? (
+					<ListCard
+						compact
+						venue={MainStore.selectedVenue || MainStore.venues[0]}
+					/>
+				) : (
+					<Box sx={{ p: 2 }}>No venues found</Box>
+				)}
 			</Box>
 		</Box>
 	);

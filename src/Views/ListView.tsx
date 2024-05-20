@@ -39,6 +39,19 @@ export default function ListView() {
 
 	return (
 		<ListContainer>
+			{venues.length === 0 && (
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						height: "100%",
+					}}>
+					<Typography level="body-lg" sx={{ color: colors.grey[500] }}>
+						No venues found
+					</Typography>
+				</Box>
+			)}
 			{venues.map((venue, i) => (
 				<ListCard venue={venue} key={i} onViewOnMapPress={onViewOnMapPress} />
 			))}
