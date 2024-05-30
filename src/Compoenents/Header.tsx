@@ -56,10 +56,10 @@ export default function Header(props: HeaderProps) {
 	});
 
 	useEffect(() => {
-		if (MainStore.searchTerm) {
-			MainStore.searchVenues(MainStore.searchTerm);
+		if (!searchTerm) {
+			MainStore.requestCurrentLocation();
 		}
-	}, [MainStore.searchTerm, MainStore.sort, MainStore.distance]);
+	}, [searchTerm]);
 
 	useEffect(() => {
 		if (props.currLocation[0] && props.currLocation[1]) {
@@ -80,6 +80,7 @@ export default function Header(props: HeaderProps) {
 	function locationSelected() {
 		if (searchResult) {
 			const place = searchResult.getPlace();
+			setSearchTerm(place.formatted_address);
 			const location = place.geometry?.location;
 
 			const lat = location?.lat();
@@ -225,8 +226,8 @@ export default function Header(props: HeaderProps) {
 					<Autocomplete onLoad={onLoad} onPlaceChanged={locationSelected}>
 						<Input
 							placeholder="Search"
-							// value={MainStore.searchTerm}
-							// onChange={(e: any) => setValue(e.target.value)}
+							value={searchTerm}
+							onChange={(e: any) => setSearchTerm(e.target.value)}
 						/>
 					</Autocomplete>
 				)}
