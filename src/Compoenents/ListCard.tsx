@@ -113,9 +113,9 @@ export default function ListCard({
 				{venue.physical_address}
 			</Typography>
 
-			<ActionBoxContainer className="cont">
+			<ActionBoxContainer className="cont" sx={{ pb: 5 }}>
 				<Typography level="body-sm">COURTS: {venue.no_of_courts}</Typography>
-				<Box
+				{/* <Box
 					sx={{
 						display: "flex",
 						alignItems: "center",
@@ -136,7 +136,7 @@ export default function ListCard({
 							Sessions
 						</Typography>
 					</ActionBox>
-				</Box>
+				</Box> */}
 			</ActionBoxContainer>
 		</Sheet>
 	);
