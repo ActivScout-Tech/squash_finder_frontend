@@ -6,6 +6,7 @@ import { useState } from "react";
 import ListCard from "../Compoenents/ListCard";
 import clubs from "../clubs.json";
 import { useMainStore } from "../Stores/MainStore";
+import marker from "../icons/marker.png";
 
 interface MapViewProps {
 	currLocation: [number, number];
@@ -23,6 +24,13 @@ const icon = new L.Icon({
 	iconUrl:
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Map_marker.svg/1200px-Map_marker.svg.png",
 	iconSize: [28, 39],
+	iconAnchor: [14, 41],
+	popupAnchor: [1, -34],
+});
+
+const myIcon = new L.Icon({
+	iconUrl: marker,
+	iconSize: [39, 39],
 	iconAnchor: [14, 41],
 	popupAnchor: [1, -34],
 });
@@ -57,7 +65,7 @@ export default function MapView(props: MapViewProps) {
 				scrollWheelZoom={false}
 				style={{ width: "100%", height: "calc(100vh - 50px)" }}>
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-				<Marker position={props.currLocation as any} icon={icon}>
+				<Marker position={props.currLocation as any} icon={myIcon}>
 					<Popup>Current Location</Popup>
 				</Marker>
 				{venues.map((venue, idx) =>
