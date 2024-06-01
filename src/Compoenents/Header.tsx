@@ -68,7 +68,7 @@ export default function Header(props: HeaderProps) {
 			)
 				.then((res) => res.json())
 				.then((data) => {
-					setLocationName(data.address.county);
+					setLocationName(data.address.county || data.address.city);
 				});
 		}
 	}, [props.currLocation]);
@@ -171,7 +171,7 @@ export default function Header(props: HeaderProps) {
 				<Typography level="body-md">
 					Location:{" "}
 					<Typography level="title-lg">
-						{MainStore.locationDenied ? (
+						{MainStore.locationDenied && !locationName ? (
 							"Location Denied, please enable location services."
 						) : locationName ? (
 							<Typography level="h4">{locationName}</Typography>

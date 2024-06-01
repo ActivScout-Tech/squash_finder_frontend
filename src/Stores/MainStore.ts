@@ -15,6 +15,7 @@ const milesToMeters = (miles: number) => miles * 1609.34;
 
 interface MainStore {
 	currentLocation: [number, number];
+	defaultLocation: [number, number];
 	venues: Venue[];
 	searchedVenues: Venue[];
 	sort: string;
@@ -38,6 +39,7 @@ interface MainStore {
 export const useMainStore = create<MainStore>()(
 	devtools((set, get) => ({
 		currentLocation: [0, 0],
+		defaultLocation: [51.5072178, 0.1275862], // London, UK
 		venues: [],
 		currentView: "list",
 		selectedVenue: null,
@@ -100,7 +102,11 @@ export const useMainStore = create<MainStore>()(
 					}));
 				});
 			} else {
-				set(() => ({ locationDenied: true }));
+				set(() => ({
+					locationDenied: true,
+					// set current location to default location: London, UK
+					currentLocation: get().defaultLocation as [number, number],
+				}));
 			}
 		},
 	}))

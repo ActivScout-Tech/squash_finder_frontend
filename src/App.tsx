@@ -22,6 +22,8 @@ function SquashSearch() {
 				});
 			} else {
 				MainStore.setLocationDenied(true);
+				// set current location to default location
+				MainStore.setCurrentLocation(MainStore.defaultLocation);
 			}
 		});
 	}, []);
