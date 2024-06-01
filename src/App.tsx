@@ -29,14 +29,19 @@ function SquashSearch() {
 	}, []);
 
 	useEffect(() => {
-		setLoading(true);
-		MainStore.fetchVenues(true, MainStore.sort)
-			.then(() => {
-				setLoading(false);
-			})
-			.catch(() => {
-				setLoading(false);
-			});
+		if (
+			MainStore.currentLocation[0] !== 0 &&
+			MainStore.currentLocation[1] !== 0
+		) {
+			setLoading(true);
+			MainStore.fetchVenues(true, MainStore.sort)
+				.then(() => {
+					setLoading(false);
+				})
+				.catch(() => {
+					setLoading(false);
+				});
+		}
 	}, [MainStore.sort, MainStore.distance, MainStore.currentLocation]);
 
 	const customTheme = extendTheme({
