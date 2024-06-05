@@ -12,6 +12,7 @@ const SERVER_URL = "https://squash-search.ctoninja.tech";
 // 	  "http://localhost:8080";
 
 const milesToMeters = (miles: number) => miles * 1609.34;
+const kmToMeters = (km: number) => km * 1000;
 
 interface MainStore {
 	currentLocation: [number, number];
@@ -63,7 +64,7 @@ export const useMainStore = create<MainStore>()(
 			const { data } = await axios.get(
 				`${SERVER_URL}/venues?sort=${sort}&targetLat=${
 					get().currentLocation[0]
-				}&targetLon=${get().currentLocation[1]}&radius=${milesToMeters(
+				}&targetLon=${get().currentLocation[1]}&radius=${kmToMeters(
 					get().distance
 				)}&limit=5&skip=${reset ? 0 : get().venues.length}`
 			);
@@ -75,7 +76,7 @@ export const useMainStore = create<MainStore>()(
 			const { data } = await axios.get(
 				`${SERVER_URL}/venues/?search=${searchTerm}&targetLat=${
 					get().currentLocation[0]
-				}&targetLon=${get().currentLocation[1]}&radius=${milesToMeters(
+				}&targetLon=${get().currentLocation[1]}&radius=${kmToMeters(
 					get().distance
 				)}&sort=${get().sort}
 				&limit=10
