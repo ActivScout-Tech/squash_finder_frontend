@@ -13,7 +13,8 @@ function calculateDistance(
 	lat2: number,
 	lon2: number
 ) {
-	const R = 3958.755866; // Radius of the Earth in meters
+	// const R = 3958.755866; // Radius of the Earth in miles
+	const R = 6371; // Radius of the Earth in kilometers
 	const dLat = toRadians(lat2 - lat1);
 	const dLon = toRadians(lon2 - lon1);
 	const a =
