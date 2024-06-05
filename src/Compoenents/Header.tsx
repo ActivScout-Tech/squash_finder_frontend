@@ -107,15 +107,7 @@ export default function Header(props: HeaderProps) {
 				onClick={() => setSearchVisible(!searchVisible)}>
 				<Search sx={{ color: searchVisible ? "#D50032" : "black" }} />
 			</IconButton>
-			<Button
-				sx={{
-					color: props.currView === "list" ? "#D50032" : "black",
-					ml: "1em",
-				}}
-				onClick={() => props.onViewChange("list")}
-				variant="plain">
-				List
-			</Button>
+
 			<Button
 				sx={{
 					marginLeft: "1em",
@@ -124,6 +116,15 @@ export default function Header(props: HeaderProps) {
 				onClick={() => props.onViewChange("map")}
 				variant="plain">
 				Map
+			</Button>
+			<Button
+				sx={{
+					color: props.currView === "list" ? "#D50032" : "black",
+					ml: "1em",
+				}}
+				onClick={() => props.onViewChange("list")}
+				variant="plain">
+				List
 			</Button>
 			<Divider orientation="vertical" sx={{ margin: "0 1em" }} />
 			<Box
@@ -154,9 +155,9 @@ export default function Header(props: HeaderProps) {
 					onChange={(e: any, newVal: any) => MainStore.setDistance(newVal)}
 					sx={{ marginLeft: "1em" }}
 					variant="plain">
-					<Option value={5}>5 miles</Option>
-					<Option value={10}>10 miles</Option>
-					<Option value={15}>15 miles</Option>
+					<Option value={5}>10 km</Option>
+					<Option value={10}>20 km</Option>
+					<Option value={15}>50 km</Option>
 				</Select>
 			</Box>
 		</>

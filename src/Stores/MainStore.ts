@@ -41,7 +41,7 @@ export const useMainStore = create<MainStore>()(
 		currentLocation: [0, 0],
 		defaultLocation: [51.5072178, 0.1275862], // London, UK
 		venues: [],
-		currentView: "list",
+		currentView: "map",
 		selectedVenue: null,
 		sort: "distance",
 		distance: 5,

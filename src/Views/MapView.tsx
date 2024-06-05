@@ -1,5 +1,12 @@
 import { Box } from "@mui/joy";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import {
+	MapContainer,
+	Marker,
+	Popup,
+	TileLayer,
+	Tooltip,
+	useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState } from "react";
@@ -7,6 +14,7 @@ import ListCard from "../Compoenents/ListCard";
 import clubs from "../clubs.json";
 import { useMainStore } from "../Stores/MainStore";
 import marker from "../icons/marker.png";
+import MyLocationButton from "../Compoenents/MyLocationButton";
 
 interface MapViewProps {
 	currLocation: [number, number];
@@ -47,7 +55,7 @@ export default function MapView(props: MapViewProps) {
 			sx={{
 				display: {
 					sm: "block",
-					md: "flex",
+					md: "block",
 				},
 			}}>
 			<MapContainer
@@ -71,15 +79,21 @@ export default function MapView(props: MapViewProps) {
 				{venues.map((venue, idx) =>
 					MainStore.selectedVenue?.id === venue.id ? null : (
 						<Marker
-							icon={icon}
-							key={idx}
-							position={[venue.latitude, venue.longitude] as any}
-							eventHandlers={{
-								click: () => MainStore.setSelectedVenue(venue),
-							}}>
-							<Popup>
-								A pretty CSS3 popup. <br /> Easily customizable.
-							</Popup>
+							key={venue.id}
+							position={[+venue.latitude, +venue.longitude]}>
+							{
+								//@ts-expect-error - Tooltip props giving error
+								<Tooltip permanent direction="right" interactive>
+									<a
+										href={"https://clubhub.net/vu/" + venue.name_unique}
+										target="_blank"
+										rel="noreferrer">
+										<b>{venue.name}</b>
+										<br />
+										Squash courts: {venue.no_of_courts}
+									</a>
+								</Tooltip>
+							}
 						</Marker>
 					)
 				)}
@@ -92,8 +106,9 @@ export default function MapView(props: MapViewProps) {
 						icon={selectedIcon}
 					/>
 				)}
+				<MyLocationButton />
 			</MapContainer>
-			<Box
+			{/* <Box
 				sx={{
 					width: "400px",
 					backgroundColor: "#f7f6f5",
@@ -108,7 +123,7 @@ export default function MapView(props: MapViewProps) {
 				) : (
 					<Box sx={{ p: 2 }}>No venues found</Box>
 				)}
-			</Box>
+			</Box> */}
 		</Box>
 	);
 }

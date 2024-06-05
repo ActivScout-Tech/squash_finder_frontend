@@ -91,13 +91,19 @@ export default function ListCard({
 				containerType: "inline-size",
 				containerName: "listContainer",
 			}}>
-			<Typography
-				level="h3"
-				sx={{
-					color: "#D50032",
-				}}>
-				{venue.name}
-			</Typography>
+			<a
+				href={"https://clubhub.net/vu/" + venue.name_unique}
+				target="_blank"
+				rel="noreferrer"
+				style={{ textDecoration: "none" }}>
+				<Typography
+					level="h3"
+					sx={{
+						color: "#D50032",
+					}}>
+					{venue.name}
+				</Typography>
+			</a>
 			<span style={{ display: "flex", alignItems: "center", marginTop: 10 }}>
 				<Typography level="body-xs">{distance} miles away</Typography>
 				{!compact && (
