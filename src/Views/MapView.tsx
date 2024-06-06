@@ -1,18 +1,10 @@
 import { Box } from "@mui/joy";
-import {
-	MapContainer,
-	Marker,
-	Popup,
-	TileLayer,
-	Tooltip,
-	useMap,
-} from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useState } from "react";
-import ListCard from "../Compoenents/ListCard";
-import clubs from "../clubs.json";
+import { useMemo } from "react";
 import { useMainStore } from "../Stores/MainStore";
+// @ts-expect-error - marker is not a module
 import marker from "../icons/marker.png";
 import MyLocationButton from "../Compoenents/MyLocationButton";
 
@@ -30,8 +22,8 @@ const selectedIcon = new L.Icon({
 
 const icon = new L.Icon({
 	iconUrl:
-		"https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Map_marker.svg/1200px-Map_marker.svg.png",
-	iconSize: [28, 39],
+		"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-icon.png",
+	iconSize: [26, 39],
 	iconAnchor: [14, 41],
 	popupAnchor: [1, -34],
 });
@@ -50,6 +42,21 @@ export default function MapView(props: MapViewProps) {
 		? MainStore.searchedVenues
 		: MainStore.venues;
 
+	const zoom =
+		MainStore.distance === 10 ? 12 : MainStore.distance === 20 ? 11 : 10.5;
+
+	const center = useMemo(() => {
+		if (MainStore.selectedVenue) {
+			return [
+				MainStore.selectedVenue.latitude,
+				MainStore.selectedVenue.longitude,
+			];
+		} else if (props.currLocation[0] && props.currLocation[1]) {
+			return props.currLocation;
+		} else {
+			return MainStore.defaultLocation;
+		}
+	}, [MainStore.selectedVenue, props.currLocation, MainStore.defaultLocation]);
 	return (
 		<Box
 			sx={{
@@ -59,30 +66,21 @@ export default function MapView(props: MapViewProps) {
 				},
 			}}>
 			<MapContainer
-				center={
-					[
-						MainStore.selectedVenue?.latitude ||
-							MainStore.venues[0]?.latitude ||
-							0,
-						MainStore.selectedVenue?.longitude ||
-							MainStore.venues[0]?.longitude ||
-							0,
-					] as any
-				}
-				zoom={11}
+				center={center as any}
+				zoom={zoom}
 				scrollWheelZoom={false}
 				style={{ width: "100%", height: "calc(100vh - 50px)" }}>
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 				<Marker position={props.currLocation as any} icon={myIcon}>
 					<Popup>Current Location</Popup>
 				</Marker>
-				{venues.map((venue, idx) =>
+				{venues.map((venue) =>
 					MainStore.selectedVenue?.id === venue.id ? null : (
 						<Marker
 							key={venue.id}
-							position={[+venue.latitude, +venue.longitude]}>
+							position={[+venue.latitude, +venue.longitude]}
+							icon={icon}>
 							{
-								//@ts-expect-error - Tooltip props giving error
 								<Tooltip permanent direction="right" interactive>
 									<a
 										href={"https://clubhub.net/vu/" + venue.name_unique}
@@ -103,10 +101,25 @@ export default function MapView(props: MapViewProps) {
 							MainStore.selectedVenue.latitude,
 							MainStore.selectedVenue.longitude,
 						]}
-						icon={selectedIcon}
-					/>
+						icon={selectedIcon}>
+						{
+							<Tooltip permanent direction="right" interactive>
+								<a
+									href={
+										"https://clubhub.net/vu/" +
+										MainStore.selectedVenue.name_unique
+									}
+									target="_blank"
+									rel="noreferrer">
+									<b>{MainStore.selectedVenue.name}</b>
+									<br />
+									Squash courts: {MainStore.selectedVenue.no_of_courts}
+								</a>
+							</Tooltip>
+						}
+					</Marker>
 				)}
-				<MyLocationButton />
+				<MyLocationButton zoom={zoom} />
 			</MapContainer>
 			{/* <Box
 				sx={{
