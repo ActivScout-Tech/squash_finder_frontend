@@ -5,17 +5,17 @@ import "leaflet-easybutton/src/easy-button.js";
 import "leaflet-easybutton/src/easy-button.css";
 import "font-awesome/css/font-awesome.min.css";
 
-const MyLocationButton = () => {
+const MyLocationButton = (props: { zoom: number }) => {
 	const map = useMap();
 
 	useEffect(() => {
 		L.easyButton(
 			"fa-location-arrow",
 			() => {
-				map.locate({ setView: true, maxZoom: 16 });
+				map.locate({ setView: true, maxZoom: props.zoom });
 			},
 			"Your Location",
-			"id"
+			"my-location"
 		).addTo(map);
 
 		// L.easyButton(

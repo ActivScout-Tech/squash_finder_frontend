@@ -45,7 +45,7 @@ export const useMainStore = create<MainStore>()(
 		currentView: "map",
 		selectedVenue: null,
 		sort: "distance",
-		distance: 5,
+		distance: 10,
 		searchTerm: "",
 		searchedVenues: [],
 		locationDenied: false,
