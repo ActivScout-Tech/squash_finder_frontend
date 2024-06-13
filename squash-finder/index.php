@@ -2,7 +2,7 @@
 /*
 Plugin Name: Squash Finder
 Description: Integrate Squash Finder into your WordPress site.
-Version: 2.8
+Version: 2.5
 Author: ClubHub 
 */
 
@@ -24,4 +24,22 @@ function squash_search($atts) {
 
 add_shortcode('squash_search', 'squash_search');
 
-add_action('wp_footer', 'link_script');
+add_action('wp_head', 'inject_settings');
+
+function inject_settings() {
+    $default_view = get_option('sf_default_view');
+    $radius_unit = get_option('sf_radius_unit');
+    $theme_accent_color = get_option('sf_theme_accent_color');
+
+    echo "<script>
+        window.squashFinderSettings = {
+            defaultView: '$default_view',
+            radiusUnit: '$radius_unit',
+            themeAccentColor: '$theme_accent_color'
+        }
+    </script>";
+}
+
+
+include_once( plugin_dir_path( __FILE__ ) . 'settings.php');
+
