@@ -30,11 +30,11 @@ const HeaderContainerStyled = styled(Box, { name: "HeaderContainer" })(
 		alignItems: "center",
 		padding: "0 1em",
 		height: "50px",
-		[theme.breakpoints.up("md")]: {
-			padding: "0 12em",
-		},
-		"@container (max-width: 750px)": {
+		"@container (max-width: 900px)": {
 			padding: "0 1em",
+		},
+		"@container (min-width: 900px)": {
+			padding: "0 12em",
 		},
 	})
 );
@@ -105,13 +105,16 @@ export default function Header(props: HeaderProps) {
 					},
 				}}
 				onClick={() => setSearchVisible(!searchVisible)}>
-				<Search sx={{ color: searchVisible ? "#D50032" : "black" }} />
+				<Search
+					sx={{ color: searchVisible ? MainStore.themeAccentColor : "black" }}
+				/>
 			</IconButton>
 
 			<Button
 				sx={{
 					marginLeft: "1em",
-					color: props.currView === "map" ? "#D50032" : "black",
+					color:
+						props.currView === "map" ? MainStore.themeAccentColor : "black",
 				}}
 				onClick={() => props.onViewChange("map")}
 				variant="plain">
@@ -119,7 +122,8 @@ export default function Header(props: HeaderProps) {
 			</Button>
 			<Button
 				sx={{
-					color: props.currView === "list" ? "#D50032" : "black",
+					color:
+						props.currView === "list" ? MainStore.themeAccentColor : "black",
 					ml: "1em",
 				}}
 				onClick={() => props.onViewChange("list")}
@@ -155,9 +159,9 @@ export default function Header(props: HeaderProps) {
 					onChange={(e: any, newVal: any) => MainStore.setDistance(newVal)}
 					sx={{ marginLeft: "1em" }}
 					variant="plain">
-					<Option value={10}>10 km</Option>
-					<Option value={20}>20 km</Option>
-					<Option value={50}>50 km</Option>
+					<Option value={10}>10 {MainStore.distanceUnit}</Option>
+					<Option value={20}>20 {MainStore.distanceUnit}</Option>
+					<Option value={50}>50 {MainStore.distanceUnit}</Option>
 				</Select>
 			</Box>
 		</>
@@ -190,7 +194,11 @@ export default function Header(props: HeaderProps) {
 							},
 						}}
 						onClick={() => setSearchVisible(!searchVisible)}>
-						<Search sx={{ color: searchVisible ? "#D50032" : "black" }} />
+						<Search
+							sx={{
+								color: searchVisible ? MainStore.themeAccentColor : "black",
+							}}
+						/>
 					</IconButton>
 					<IconButton
 						sx={{

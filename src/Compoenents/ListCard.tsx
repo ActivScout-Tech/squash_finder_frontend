@@ -100,7 +100,7 @@ export default function ListCard({
 				<Typography
 					level="h3"
 					sx={{
-						color: "#D50032",
+						color: MainStore.themeAccentColor,
 					}}>
 					{venue.name}
 				</Typography>
@@ -111,7 +111,11 @@ export default function ListCard({
 					<Typography
 						onClick={() => onViewOnMapPress && onViewOnMapPress(venue)}
 						level="body-xs"
-						sx={{ ml: 1, color: "#D50032", cursor: "pointer" }}>
+						sx={{
+							ml: 1,
+							color: MainStore.themeAccentColor,
+							cursor: "pointer",
+						}}>
 						View on map
 					</Typography>
 				)}

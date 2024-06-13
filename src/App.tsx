@@ -12,6 +12,15 @@ function SquashSearch() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		const settings = (window as any).squashFinderSettings;
+		if (settings) {
+			MainStore.setCurrentView(settings.defaultView);
+			MainStore.setDistanceUnit(settings.radiusUnit);
+			MainStore.setThemeAccentColor(settings.themeAccentColor);
+		}
+	}, []);
+
+	useEffect(() => {
 		navigator.permissions.query({ name: "geolocation" }).then((result) => {
 			if (result.state === "granted" || result.state === "prompt") {
 				navigator.geolocation.getCurrentPosition((position) => {

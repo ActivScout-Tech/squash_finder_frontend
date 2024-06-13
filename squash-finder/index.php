@@ -2,7 +2,7 @@
 /*
 Plugin Name: Squash Finder
 Description: Integrate Squash Finder into your WordPress site.
-Version: 1.0
+Version: 2.8
 Author: ClubHub 
 */
 

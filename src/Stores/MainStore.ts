@@ -23,6 +23,8 @@ interface MainStore {
 	distance: number;
 	searchTerm: string;
 	locationDenied: boolean;
+	themeAccentColor: string;
+	distanceUnit: string;
 	setSearchTerm: (searchTerm: string) => void;
 	fetchVenues: (reset: boolean, sort?: string) => Promise<void>;
 	setCurrentLocation: (location: [number, number]) => void;
@@ -35,6 +37,8 @@ interface MainStore {
 	searchVenues: (searchTerm: string) => Promise<void>;
 	setLocationDenied: (denied: boolean) => void;
 	requestCurrentLocation: () => void;
+	setThemeAccentColor: (color: string) => void;
+	setDistanceUnit: (unit: string) => void;
 }
 
 export const useMainStore = create<MainStore>()(
@@ -49,6 +53,8 @@ export const useMainStore = create<MainStore>()(
 		searchTerm: "",
 		searchedVenues: [],
 		locationDenied: false,
+		themeAccentColor: "#D50032",
+		distanceUnit: "km",
 
 		setCurrentLocation: (location: [number, number]) =>
 			set(() => ({ currentLocation: location })),
@@ -61,12 +67,16 @@ export const useMainStore = create<MainStore>()(
 			set(() => ({ locationDenied: denied })),
 
 		fetchVenues: async (reset: boolean, sort?: string) => {
+			const { distance, distanceUnit, currentLocation, venues } = get();
+			const radius =
+				distanceUnit === "km" ? kmToMeters(distance) : milesToMeters(distance);
+
 			const { data } = await axios.get(
 				`${SERVER_URL}/venues?sort=${sort}&targetLat=${
-					get().currentLocation[0]
-				}&targetLon=${get().currentLocation[1]}&radius=${kmToMeters(
-					get().distance
-				)}&limit=5&skip=${reset ? 0 : get().venues.length}`
+					currentLocation[0]
+				}&targetLon=${currentLocation[1]}&radius=${radius}&limit=5&skip=${
+					reset ? 0 : venues.length
+				}`
 			);
 
 			set(() => ({ venues: reset ? data : [...data, ...data] }));
@@ -109,6 +119,14 @@ export const useMainStore = create<MainStore>()(
 					currentLocation: get().defaultLocation as [number, number],
 				}));
 			}
+		},
+
+		setThemeAccentColor(color) {
+			set({ themeAccentColor: color });
+		},
+
+		setDistanceUnit(unit) {
+			set({ distanceUnit: unit });
 		},
 	}))
 );
