@@ -2,7 +2,7 @@
 /*
 Plugin Name: Squash Finder
 Description: Integrate Squash Finder into your WordPress site.
-Version: 2.5
+Version: 2.7
 Author: ClubHub 
 */
 
@@ -38,6 +38,24 @@ function inject_settings() {
             themeAccentColor: '$theme_accent_color'
         }
     </script>";
+}
+
+add_filter( 'plugin_action_links_squash_finder/index.php', 'sf_settings_link' );
+function sf_settings_link( $links ) {
+	// Build and escape the URL.
+	$url = esc_url( add_query_arg(
+		'page',
+		'squash-finder-settings',
+		get_admin_url() . 'admin.php'
+	) );
+	// Create the link.
+	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
+	// Adds the link to the end of the array.
+	array_push(
+		$links,
+		$settings_link
+	);
+	return $links;
 }
 
 
