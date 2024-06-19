@@ -32,7 +32,7 @@ function updateVersion(filePath) {
             const updatedData = data.replace(versionRegex, `Version: ${newVersion}`);
 
             // Write the updated content back to the file
-            fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+            fs.writeFileSync(filePath, updatedData, 'utf8', (err) => {
                 if (err) {
                     console.error(`Error writing the file: ${err}`);
                     return;

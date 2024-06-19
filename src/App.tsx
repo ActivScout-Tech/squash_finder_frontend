@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import Header from "./Compoenents/Header";
 import ListView from "./Views/ListView";
 import MapView from "./Views/MapView";
-import { CircularProgress, CssVarsProvider, extendTheme } from "@mui/joy";
+import {
+	Box,
+	CircularProgress,
+	CssVarsProvider,
+	Typography,
+	extendTheme,
+} from "@mui/joy";
 import { useMainStore } from "./Stores/MainStore";
+import logo from "./icons/logo.png";
 import "@fontsource/inter";
 import "./index.css";
 
@@ -93,6 +100,28 @@ function SquashSearch() {
 						<MapView currLocation={currentLocation as [number, number]} />
 					)}
 				</div>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						padding: "10px",
+						color: "text.secondary",
+						fontSize: "0.8rem",
+						position: "fixed",
+						bottom: 0,
+						// left: 0,
+						right: 0,
+						width: "200px",
+						backgroundColor: "rgba(255, 255, 255, 0.8)",
+					}}>
+					<Typography>Powered by: ClubHub</Typography>
+					<img
+						src={logo}
+						alt="Squash Finder Logo"
+						style={{ height: "30px", marginLeft: 2 }}
+					/>
+				</Box>
 			</CssVarsProvider>
 		</div>
 	);

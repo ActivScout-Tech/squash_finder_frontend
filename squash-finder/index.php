@@ -2,7 +2,7 @@
 /*
 Plugin Name: Squash Finder
 Description: Integrate Squash Finder into your WordPress site.
-Version: 2.7
+Version: 2.14
 Author: ClubHub 
 */
 
@@ -40,22 +40,74 @@ function inject_settings() {
     </script>";
 }
 
-add_filter( 'plugin_action_links_squash_finder/index.php', 'sf_settings_link' );
-function sf_settings_link( $links ) {
-	// Build and escape the URL.
-	$url = esc_url( add_query_arg(
+function plugin_add_settings_link( $links ) {
+    	$url = esc_url( add_query_arg(
 		'page',
 		'squash-finder-settings',
 		get_admin_url() . 'admin.php'
 	) );
 	// Create the link.
 	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
-	// Adds the link to the end of the array.
-	array_push(
-		$links,
-		$settings_link
-	);
-	return $links;
+
+    array_push( $links, $settings_link );
+    return $links;
+}
+$plugin = plugin_basename( __FILE__ );
+add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
+
+
+// for plugin updates
+
+add_filter('pre_set_site_transient_update_plugins', 'check_for_plugin_update');
+add_filter('plugins_api', 'plugin_info', 10, 3);
+
+function check_for_plugin_update($transient) {
+    if (empty($transient->checked)) {
+        return $transient;
+    }
+
+    $plugin_slug = plugin_basename(__FILE__);
+    $current_version = $transient->checked[$plugin_slug];
+
+    $response = wp_remote_get('https://clubhub1.s3.eu-north-1.amazonaws.com/squash-finder-update-info.json');
+    if (!is_wp_error($response) && is_array($response)) {
+        $update_info = json_decode($response['body'], true);
+        if (version_compare($current_version, $update_info['new_version'], '<')) {
+            $transient->response[$plugin_slug] = (object) array(
+                'slug'        => $plugin_slug,
+                'new_version' => $update_info['new_version'],
+                'url'         => $update_info['url'],
+                'package'     => $update_info['package'],
+            );
+        }
+    }
+
+    return $transient;
+}
+
+function plugin_info($false, $action, $args) {
+    $plugin_slug = plugin_basename(__FILE__);
+
+    if ($action === 'plugin_information' && $args->slug === $plugin_slug) {
+        $response = wp_remote_get('https://clubhub1.s3.eu-north-1.amazonaws.com/squash-finder-update-info.json');
+        if (!is_wp_error($response) && is_array($response)) {
+            $update_info = json_decode($response['body'], true);
+
+            return (object) array(
+                'name'          => 'Squash Finder',
+                'slug'          => $plugin_slug,
+                'version'       => $update_info['new_version'],
+                'author'        => 'ClubHub',
+                'homepage'      => $update_info['url'],
+                'download_link' => $update_info['package'],
+                'sections'      => array(
+                    'description' => 'Integrate Squash Finder into your WordPress site.',
+                ),
+            );
+        }
+    }
+
+    return false;
 }
 
 
